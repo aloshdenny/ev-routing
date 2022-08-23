@@ -86,4 +86,6 @@ So our algorithm will choose Cs3 >> Cs2 >> Cs1
 [ In this I have applied greedy search which allows us to find optimal CS without the need of calculating travel_time of each and every CS]
 note: Greedy Search in our case gives optimal solution, details of this method can be found in the report
 <img src="Images/x1_16.gif" /> 
+## Theory
 
+Theory Notebook link: https://colab.research.google.com/drive/1ttKeYIf_TUjrm9HPu8U5_PRI2A7Vi6s9?usp=sharing
