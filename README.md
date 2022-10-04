@@ -88,4 +88,4 @@ note: Greedy Search in our case gives optimal solution, details of this method c
 <img src="Images/x1_16.gif" /> 
 ## Theory
 
-Theory Notebook link: https://colab.research.google.com/drive/1ttKeYIf_TUjrm9HPu8U5_PRI2A7Vi6s9?usp=sharing
+Theory Notebook link: https://colab.research.google.com/drive/1zSd24UZs3tKTVcDbJ61VH8CpsZ8QZA8d?usp=sharing
