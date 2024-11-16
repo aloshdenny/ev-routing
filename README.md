@@ -1,91 +1,94 @@
 # EV-Enrouting
-<h3>Find optimal path for electric vehicle using spatial information.</h3>
 
-<h2>Preprocessing :-</h1>
-<p></p>
-<img src="Images/x1_2.gif" />
+### Find optimal path for electric vehicles using spatial information.
 
-## Our algorithm solves 3 main problems: 
- * Finding Best Route
- * Finding Optimal Location to setup a Charging Station
- * Dealing with Overhead on Charging Stations
+## Preprocessing
 
-Below we will see demo of these:-
+![Preprocessing](Images/x1_2.gif)
 
-## 1.Finding Best Route: 
-<h4> a) Base problem </h4>
-<h6>Our algorithm gives us the best route which will take the shortest path out of all the available charging stations.</h6>
-<img src="Images/x1_4.gif" />
-<h4> b) Now with traffic data </h4>
-<h6>The benefit of this grid approach over graph approach is that we can very easily put layers of information on top and our algorithm will work fine. Like here we have added traffic information on top of it.</h6>
-<img src="Images/x1_5.gif" />
-<h4> c) With remaining battery<h4>
-<h6>We can also pass the information about available battery power and it will tell us if there is any charging station within our battery limit. We have given remaining battery of 100 minutes and now we see that many times it is not showing us any path  because it is out of range of 100 minutes. </h6>
-<img src="Images/x1_8.gif" />
-Let's look at details of how it is working:-
-<img src="Images/x1_10.gif" />
+## Our Algorithm Solves Three Main Problems:
+- Finding the Best Route
+- Finding the Optimal Location to Set Up a Charging Station
+- Dealing with Overhead on Charging Stations
 
-## 2.Finding Optimal Location to setup a Charging Station:
-Finding the optimal location to set up a charging station is very tricky and we have to look at various factors, like where there is more demand and  which is geographically the most feasible location from all places.
-### So to solve this we applied three approaches. 
- * a) Brute force approach
- * b) Sliding Window Technique
- * c) Subblocks Technique
+### 1. Finding Best Route
 
-<br>
-a) In <b>brute force</b> approach we calculated total return by putting CS at each point of grid (50*50) and the point corresponding to maximum total return is the optimal point.<br>
-b) In <b>sliding window</b> we took a window of 10*10 and moved over this 50*50 matrix.<br>
-c) In </b>Sub-blocks Technique</b> we divided our whole grid into 4 sub grids (upper left, upper right, lower left, lower right). Then we calculated the return of the median point for each sub grid. We repeat the same for subgrid with max total return.<br>
-[Optimality]<br>
+#### a) Base Problem
+Our algorithm identifies the best route that takes the shortest path among all available charging stations.
 
-> Brute Force Approach >> Sliding Window Technique >> Sub-blocks method <br>
+![Base Route](Images/x1_4.gif)
 
-[Speed]<br>
+#### b) Now with Traffic Data
+The benefit of this grid approach over a graph approach is that we can easily layer additional information, such as traffic data.
 
-> Sub-blocks method >> Sliding Window Technique >> Brute Force Approach<br>
+![Traffic Data](Images/x1_5.gif)
 
-(So there is tradeoff between Speed and Optimality)
-<h4>Sliding Window Techniqe </h4>
-<img src="Images/x1_11.gif" />
-<h4>Sliding Window with traffic</h4>
-<img src="Images/x1_13.gif" /> <br>
-note: we see that due to traffic the optimal charging station position has changed, which makes sense.
+#### c) With Remaining Battery
+By inputting available battery power, the algorithm informs us whether there are any charging stations within our battery limit. For example, with a remaining battery of 100 minutes, it may not show a path if all stations are out of range.
 
-## 3.Overhead on Charging stations:
-### For this I have defined two types of overhead on the charging stations. 
- * a) Dynamic overhead 
- * b) Static Overhead 
-<br>
-<b>Dynamic Overhead</b> tells how many cars are there in the queue, i.e. if we reach the Charging station now then after how much time we will get the turn. <br>
-<b>Static Overhead</b> tells about on an average when a vehicle is plugged in for charging how much time it takes to get fully charged. <br>
-Together these two help us find a charging station which is best for us at that current moment.<br>
-[case1] : only Static Overhead
+![Remaining Battery](Images/x1_8.gif)
 
+Let's look at details of how it works:
 
-| Charging Station | Static Overhead  | travel time  | total time |
-| :---:   | :-: | :-: | :-: |
-| Cs1 | 50 | 20 | 70 |
-| Cs2 | 10 | 28 | 38 |
-| Cs3 | 5 | 38 | 43 |
+![Algorithm Details](Images/x1_10.gif)
 
-So our algorithm will choose Cs2 >> Cs3 >> Cs1 <br>
-Let’s verify below.
+### 2. Finding Optimal Location to Set Up a Charging Station
 
-<img src="Images/x1_19.gif" /> <br>
+Finding the optimal location for a charging station is complex and involves various factors such as demand and geographical feasibility. We applied three approaches:
 
-[case2] : both Dynamic and Static Overhead 
+- **a) Brute Force Approach:** We calculate total returns by placing a charging station at each point on a 50x50 grid, identifying the point with the maximum total return as optimal.
+  
+- **b) Sliding Window Technique:** A 10x10 window moves over the 50x50 matrix to calculate returns.
+  
+- **c) Sub-blocks Technique:** We divide the grid into four sub-grids (upper left, upper right, lower left, lower right) and calculate the return for the median point of each. This process repeats for the sub-grid with the maximum total return.
 
-| Charging Station | Dynamic Overhead  | travel time  | remaining overhead:- max(0, Dynamic_overhead-travel_time) | Static Overhead | Total Overhead:- rem_overhead + static_overhead | Total time (total_overhead + travel_time |
-| :---:   | :-: | :-: | :-: | :-: | :-: | :-: |
-| Cs1 | 40 | 20 | 20 | 50 | 70 | 90 |
-| Cs2 | 48 | 28 | 20 | 10 | 30 | 58 |
-| Cs3 | 27 | 38 | 0 | 5 | 5 | 43 |
+#### Optimality
+- **Brute Force Approach > Sliding Window Technique > Sub-blocks Method**
 
+#### Speed
+- **Sub-blocks Method > Sliding Window Technique > Brute Force Approach**
 
-So our algorithm will choose Cs3 >> Cs2 >> Cs1 
-[ In this I have applied greedy search which allows us to find optimal CS without the need of calculating travel_time of each and every CS]
-note: Greedy Search in our case gives optimal solution, details of this method can be found in the report
-<img src="Images/x1_16.gif" /> 
+(There is a trade-off between speed and optimality.)
+
+![Sliding Window Technique](Images/x1_11.gif)
+![Sliding Window with Traffic](Images/x1_13.gif)
+
+Note: Due to traffic, the optimal charging station position may change, which makes sense.
+
+### 3. Overhead on Charging Stations
+
+We define two types of overhead on charging stations:
+- **a) Dynamic Overhead:** Indicates the number of cars in queue and the wait time.
+- **b) Static Overhead:** Average time required to charge a vehicle fully.
+
+Together, these metrics help us find the best charging station at a given moment.
+
+#### Case 1: Only Static Overhead
+
+| Charging Station | Static Overhead | Travel Time | Total Time |
+| :---: | :-: | :-: | :-: |
+| Cs1   | 50  | 20  | 70  |
+| Cs2   | 10  | 28  | 38  |
+| Cs3   | 5   | 38  | 43  |
+
+Our algorithm chooses: Cs2 >> Cs3 >> Cs1
+
+![Static Overhead Verification](Images/x1_19.gif)
+
+#### Case 2: Both Dynamic and Static Overhead
+
+| Charging Station | Dynamic Overhead | Travel Time | Remaining Overhead | Static Overhead | Total Overhead | Total Time |
+| :---: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Cs1   | 40  | 20  | 20  | 50  | 70            | 90         |
+| Cs2   | 48  | 28  | 20  | 10  | 30            | 58         |
+| Cs3   | 27  | 38  | 0   | 5   | 5             | 43         |
+
+Our algorithm chooses: Cs3 >> Cs2 >> Cs1
+
+In this case, we apply a greedy search, allowing us to find the optimal charging station without calculating travel time for each one. Greedy search provides an optimal solution, as detailed in the report.
+
+![Dynamic and Static Overhead](Images/x1_16.gif)
+
 ## Theory
 
-Theory Notebook link: https://colab.research.google.com/drive/1zSd24UZs3tKTVcDbJ61VH8CpsZ8QZA8d?usp=sharing
+[Theory Notebook](https://colab.research.google.com/drive/1zSd24UZs3tKTVcDbJ61VH8CpsZ8QZA8d?usp=sharing)
